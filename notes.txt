@@ -1,0 +1,39 @@
+Dockerfile
+RUN Instruction:
+
+- RUN is used to execute commands while building the Docker image.
+- It allows you to run commands inside the Docker image at build time 
+to install packages, update software, download dependencies, create directories, etc.
+- Each RUN instruction in a Dockerfile creates a new layer in the image. This means that 
+changes made by a RUN command are committed to the image 
+and become part of its filesystem.
+
+CMD Instruction:
+
+- CMD is used to define the default command that will be executed when a container 
+starts from the built image. 
+- It specifies what command should be run when the container is launched, and it can be overridden by providing a command at runtime.
+- Only the last CMD instruction in a Dockerfile is effective; it defines the command and parameters to be executed when the container starts.
+- If a Dockerfile has multiple CMD instructions, only the last one takes effect.
+
+
+Docker commands
+
+Building an image from a Dockerfile:
+
+docker build .
+
+When creating a Docker image using a Dockerfile, you can specify 
+the image name using the -t or --tag flag followed by the desired 
+image name and optionally a tag (version):
+
+docker build -t <image_name>[:<tag>] <path_to_Dockerfile_directory>
+
+When invoking a docker image you can specify the port mapping and the
+name of the running container instance.
+
+docker run -p <host_port:container_port> --name <container_name> <image_name or sha1>
+
+To stop a container use:
+
+docker stop <container_name>
