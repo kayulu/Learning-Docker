@@ -51,8 +51,7 @@ Building an image from a Dockerfile:
 > ``docker build .``
 
 When creating a Docker image using a Dockerfile, you can specify 
-the image name using the ``-t`` or ``--tag`` flag followed by the desired 
-image name and optionally a tag (version):
+the resulting image name using the ``-t`` or ``--tag`` flag and optionally a tag (version):
 
 > ``docker build -t <IMAGE>[:<TAG>] <DOCKERFILE>``
 
@@ -64,7 +63,7 @@ To start it in detached mode:
 
 > ``docker run -d <IMAGE>``
 
-When invoking a docker image you can specify the port mapping and the name of the running container instance.
+When invoking a docker image you can specify the port mapping and the name of the resulting container instance.
 
 > ``docker run -p <HP:CP> --name <CONTAINER> <IMAGE>``
 
