@@ -67,6 +67,14 @@ When invoking a docker image you can specify the port mapping and the name of th
 
 > ``docker run -p <HP:CP> --name <CONTAINER> <IMAGE>``
 
+Creating a container that can be interacted with and provides a tty
+
+> ``docker run -i -t <IMAGE>``
+>
+> or
+>
+> ``docker run -it <IMAGE>``
+
 # Container commands
 
 To stop a container use:
@@ -96,3 +104,29 @@ Reattach to a detached running container:
 Fetching the logs from a detached container:
 
 > ``docker logs <CONTAINER>``
+
+# Management commands
+
+Listing all images
+
+> ``docker images``
+
+Removing a image
+
+> ``docker rmi <IMAGE>``
+
+Listing running containers
+
+> ``docker ps``
+
+Listing running and stopped containers
+
+> ``docker ps --all``
+
+Removing a stopped container
+
+> ``docker rm <CONTAINER>``
+
+Inspecting the configuration of an image
+
+> ``docker image inspect <IMAGE>``
