@@ -130,3 +130,9 @@ Removing a stopped container
 Inspecting the configuration of an image
 
 > ``docker image inspect <IMAGE>``
+
+Transfering data from host to container and vice versa
+
+> ``docker cp <source_path> <CONTAINER>:/<container_path>``
+>
+> ``docker cp <CONTAINER>:/<container_path> <source_path>``
