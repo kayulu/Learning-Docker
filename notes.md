@@ -1,8 +1,8 @@
-# Dockerfile
+# Dockerfile Instructions
 ## RUN Instruction:
 
 - ``RUN`` is used to execute commands while building the Docker image.
-- It allows you to run commands inside the Docker image at build time 
+- It allows you to run commands inside the Docker image at build time
 to install packages, update software, download dependencies, create directories, etc.
 - Each ``RUN`` instruction in a Dockerfile creates a new layer in the image. This means that 
 changes made by a ``RUN`` command are committed to the image 
@@ -10,11 +10,17 @@ and become part of its filesystem.
 
 ## CMD Instruction:
 
-- ``CMD`` is used to define the default command that will be executed when a container 
-starts from the built image. 
-- It specifies what command should be run when the container is launched, and it can be overridden by providing a command at runtime.
+- ``CMD`` can be used to define the default command that will be executed when a container 
+starts from the immage that was created. 
+- It specifies what command should be run when the container is launched, and it can be overridden by providing a command at runtime with ``docker run ...``.
 - Only the last ``CMD`` instruction in a Dockerfile is effective; it defines the command and parameters to be executed when the container starts.
 - If a Dockerfile has multiple ``CMD`` instructions, only the last one takes effect.
+
+## ENTRYPOINT Instruction:
+
+- Alternativly to ``CMD`` there is the ``ENTRYPOINT`` instruction.
+- It provides a fixed starting command for the container
+- ``CMD`` instruction can be used to provide additional arguments to the ``ENTRYPOINT`` instruction
 
 # Images
 Every instruction in the DOCKERFILE creates a layer. The layers are readonly and Docker caches them.
@@ -38,7 +44,9 @@ Docker commands can be categorised into four main groups (ChatGPT 3.5):
 
 - **Runtime Commands**: Runtime commands encompass actions that directly affect the runtime behavior of containers, such as executing commands within a running container, monitoring container resource usage, and managing container logs and stats. These commands provide insights into container performance and allow users to interact with running containers during their execution.
 
-To list all all build-in main commands of docker write ``docker --help``. To list all options to a specific command add ``docker <cmd> --help``.
+> **Reference**: https://docs.docker.com/engine/reference/run/
+
+> **Tip**: To list all all build-in main commands of docker write ``docker --help``. To list all options to a specific command add ``docker <cmd> --help``.
 
 # Abbreviations
 
@@ -75,19 +83,15 @@ Creating a container that can be interacted with and provides a tty
 >
 > ``docker run -it <IMAGE>``
 
+Creating a container that gets automatically removed when the container stops
+
+> ``docker run --rm <IMAGE>``
+
 # Container commands
 
 To stop a container use:
 
 > ``docker stop <CONTAINER>``
-
-List running containers:
-
-> ``docker ps``
-
-List all containers:
-
-> ``docker ps --all``
 
 Restart existing *stopped* container (detached):
 
@@ -127,6 +131,10 @@ Removing a stopped container
 
 > ``docker rm <CONTAINER>``
 
+Removing an image
+
+> ``docker rmi <IMAGE>``
+
 Inspecting the configuration of an image
 
 > ``docker image inspect <IMAGE>``
@@ -136,3 +144,23 @@ Transfering data from host to container and vice versa
 > ``docker cp <source_path> <CONTAINER>:/<container_path>``
 >
 > ``docker cp <CONTAINER>:/<container_path> <source_path>``
+
+Clone/rename an image 
+
+> ``docker tag <OLD_IMAGE_Name>:[<OLD_TAG>] <NEW_IMAGE_Name>:[<NEW_TAG>]``
+
+Pushing an image to Docker Hub (must login to account) 
+
+> ``docker push <DockerHubID>/<IMAGE>:[<TAG>]``
+
+Pulling an image from Docker Hub
+
+> ``docker pull <DockerHubID>/<IMAGE>:[<TAG>]``
+
+Removing all stopped containers
+
+> ``docker container prune``
+
+Remove all dangling images (not associated by a container or needed by another image)
+
+> ``docker image prune``
