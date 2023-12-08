@@ -22,6 +22,11 @@ starts from the immage that was created.
 - It provides a fixed starting command for the container
 - ``CMD`` instruction can be used to provide additional arguments to the ``ENTRYPOINT`` instruction
 
+## ENV Instruction:
+
+- use it to set environment variables in a Dockerfile
+- syntax: ``ENV myvar="myvalue"`` or ``ENV myvar 80``
+
 # Images
 Every instruction in the DOCKERFILE creates a layer. The layers are readonly and Docker caches them.
 If something in the project needs to be changed you have to rebuild the image. Docker will then rebuild all layers
@@ -182,7 +187,7 @@ Therefore to retain data between container removals, Docker has this concept of 
 
 Volumes are specialy designed directories **outside** the container's filesystem. If a volume is a so called **Named Volume** data will persist even if the container is removed. Data that is stored in Named Volumes can be shared across multiple containers that are based on the same image.
 
-This is not the case for **Anonymous Volumes**.
+This is not the case for **Anonymous Volumes**. They are attached to a container and can be used to save temporary data inside the container.
 
 > You do not have direct access to data of a volume on your host machine. Volumes are managed by Docker.
 
@@ -216,3 +221,9 @@ This prevents writing to ``<PATH_IN_CONTAINER>`` in the running container. On th
 
 # Dockerignore
 The .dockerignore file can be used to exclude files and folder from being copied when the ``COPY`` instruction in a Dockerfile executes.
+
+# Build ARGument and runtime ENVironment variables
+Arguments can be specified during construction of an image with ``docker build`` by using the ``--build-arg`` flag or inside a Dockerfile to specify default values for an argument using the ``ARG`` instruction followed by the default value.
+
+Environment variables can be specified in a Dockerfile using the ``ENV`` instruction or when starting a container with ``docker run`` by using the ``--env`` or ``-e`` flag. Environmet variables set in the ``docker run`` command will override those that were set in the Dockerfile.
+There is also the option to use a file which contains all enviroment variables. Use ``--env-file`` flag followed by the filepath to use it.

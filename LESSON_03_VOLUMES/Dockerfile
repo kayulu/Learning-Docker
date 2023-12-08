@@ -8,7 +8,13 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 80
+ARG DEFAULT_PORT=8000
+
+ENV PORT ${DEFAULT_PORT}
+
+ENV PORT 80
+
+EXPOSE $PORT
 
 # anonymous volume
 # VOLUME [ "/app/feedback" ]
