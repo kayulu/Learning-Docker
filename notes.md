@@ -198,10 +198,21 @@ Bind Mounts like Volumes must be created when running the image-container.
 
 > ``docker run -v <ABS_PATH_TO_DIR_TO_BE_BOUND_ON_HOST>:<PATH_IN_CONTAINER> <CONTAINER>``
 
-When bind mounting a directory from the host it might happen, that files and folders in the container get overriden. For example when specifing ``RUN npm install`` in the Dockerfile it creates a **node_modules** directory on the container which contains all dependent modules. Now when bind mounting the the working directory on the host that node_modules directory will be overriden or deleted because it does not exist on the host. Now the application crashes because it misses dependencies.
+When bind mounting a directory from the host it might happen, that files and folders in the container get overriden. For example when specifing ``RUN npm install`` in the Dockerfile it creates a **node_modules** directory on the container which contains all dependent modules. Now when bind mounting the working directory, that **node_modules** directory will be overriden or deleted because it does not exist on the host (npm install was not run on host). Now the application crashes because it misses dependencies.
 
 To avoid this from happening you can specify an annoymous volume in addition to the bind mount when running the container. This will create the appropriate directory on the host machine. ``nodule_modules`` directory in this case:
 
 > ``docker run -v <ANONYMOUS_VOLUME> -v <ABS_PATH_TO_DIR_TO_BE_BOUND_ON_HOST>:<PATH_IN_CONTAINER> <CONTAINER>``
 
 TODO: i do not really understand why this works. Docker somehow manages the node_modules directories on both the host and the container without overriding files in neither direction. If a new file is created on the host in node_module dir it is not synchronized to the container, and vice versa. I guess the created annoymous volume acts as a mapping of files and folders between host and a specific container.
+
+## Read-only Bind Mount
+
+It's possible to mount a directory as read-only. For that add the :ro suffix to the end of the bind mount:
+
+``docker run -v <ABS_PATH_TO_DIR_TO_BE_BOUND_ON_HOST>:<PATH_IN_CONTAINER>:ro <CONTAINER>``
+
+This prevents writing to ``<PATH_IN_CONTAINER>`` in the running container. On the other hand  it's still possible to write to ``<ABS_PATH_TO_DIR_TO_BE_BOUND_ON_HOST>`` at the host. 
+
+# Dockerignore
+The .dockerignore file can be used to exclude files and folder from being copied when the ``COPY`` instruction in a Dockerfile executes.
