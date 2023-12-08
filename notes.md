@@ -164,3 +164,44 @@ Removing all stopped containers
 Remove all dangling images (not associated by a container or needed by another image)
 
 > ``docker image prune``
+
+
+# Volumes and Bind Mounts
+
+A Docker container provides it's own filesystem that sits on top of the static image layers (writeable layer). Files created by applications running inside a container will be stored in this writeable layer.
+
+There are three types of Volumes
+1. Anonymous Volumes
+2. Named Volumes
+3. Bind Mounts
+
+## Volumes
+If a container will be stoped (not removed) changes made to the filesystem in the writeable layer will persist. But if a container gets removed, all data that was written will be lost.
+
+Therefore to retain data between container removals, Docker has this concept of **Volumes** and **Bind Mounts**. Volumes are managed by Docker. Bind Mounts are managed by the user.
+
+Volumes are specialy designed directories **outside** the container's filesystem. If a volume is a so called **Named Volume** data will persist even if the container is removed. Data that is stored in Named Volumes can be shared across multiple containers that are based on the same image.
+
+This is not the case for **Anonymous Volumes**.
+
+> You do not have direct access to data of a volume on your host machine. Volumes are managed by Docker.
+
+Named Volumes can't be produced in the Dockerfile. They must be created when running the image.
+
+> ``docker run -v <VOLUME_NAME>:/<PATH_INSIDE_CONTAINER_TO_BE_MAPPED> <CONTAINER>``
+
+# Bind Mounts
+
+Bind Mounts allow for mounting or linking folders outside the container to folders inside the container. So any changes made to files and folders outside the container will directly affect files and folders inside the container, and vice versa. This can be used to share configuration files, code or other resources.
+
+Bind Mounts like Volumes must be created when running the image-container.
+
+> ``docker run -v <ABS_PATH_TO_DIR_TO_BE_BOUND_ON_HOST>:<PATH_IN_CONTAINER> <CONTAINER>``
+
+When bind mounting a directory from the host it might happen, that files and folders in the container get overriden. For example when specifing ``RUN npm install`` in the Dockerfile it creates a **node_modules** directory on the container which contains all dependent modules. Now when bind mounting the the working directory on the host that node_modules directory will be overriden or deleted because it does not exist on the host. Now the application crashes because it misses dependencies.
+
+To avoid this from happening you can specify an annoymous volume in addition to the bind mount when running the container. This will create the appropriate directory on the host machine. ``nodule_modules`` directory in this case:
+
+> ``docker run -v <ANONYMOUS_VOLUME> -v <ABS_PATH_TO_DIR_TO_BE_BOUND_ON_HOST>:<PATH_IN_CONTAINER> <CONTAINER>``
+
+TODO: i do not really understand why this works. Docker somehow manages the node_modules directories on both the host and the container without overriding files in neither direction. If a new file is created on the host in node_module dir it is not synchronized to the container, and vice versa. I guess the created annoymous volume acts as a mapping of files and folders between host and a specific container.
