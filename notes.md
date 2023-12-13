@@ -170,6 +170,10 @@ Remove all dangling images (not associated by a container or needed by another i
 
 > ``docker image prune``
 
+Create a Docker Network
+
+> ``docker network create <NETWORK_NAME>``
+
 
 # Volumes and Bind Mounts
 
@@ -195,7 +199,7 @@ Named Volumes can't be produced in the Dockerfile. They must be created when run
 
 > ``docker run -v <VOLUME_NAME>:/<PATH_INSIDE_CONTAINER_TO_BE_MAPPED> <CONTAINER>``
 
-# Bind Mounts
+## Bind Mounts
 
 Bind Mounts allow for mounting or linking folders outside the container to folders inside the container. So any changes made to files and folders outside the container will directly affect files and folders inside the container, and vice versa. This can be used to share configuration files, code or other resources.
 
@@ -211,7 +215,7 @@ To avoid this from happening you can specify an annoymous volume in addition to 
 
 TODO: i do not really understand why this works. Docker somehow manages the node_modules directories on both the host and the container without overriding files in neither direction. If a new file is created on the host in node_module dir it is not synchronized to the container, and vice versa. I guess the created annoymous volume acts as a mapping of files and folders between host and a specific container.
 
-## Read-only Bind Mount
+### Read-only Bind Mount
 
 It's possible to mount a directory as read-only. For that add the :ro suffix to the end of the bind mount:
 
@@ -227,3 +231,36 @@ Arguments can be specified during construction of an image with ``docker build``
 
 Environment variables can be specified in a Dockerfile using the ``ENV`` instruction or when starting a container with ``docker run`` by using the ``--env`` or ``-e`` flag. Environmet variables set in the ``docker run`` command will override those that were set in the Dockerfile.
 There is also the option to use a file which contains all enviroment variables. Use ``--env-file`` flag followed by the filepath to use it.
+
+# Networks
+Docker provides several concepts of network communication scenarios for containerized applications.
+A dockerized application might for example communicate with a service:
+
+- that's on the WWW (*External Network*)
+- runs on the host (*Host Network*)
+- runs on another container (*Bridge Network*)
+
+## External Network
+An application that runs inside a container can sent requests to external (www) services without any special configuration. Containers generally have access to the internet by default, as they leverage the networking capabilities of the host machine.
+
+## Host Network
+An application that runs inside a container can utilize the **host.docker.internal** DNS name to access services running on the Docker host without needing to know the host machine's IP address explicitly. It resolves to the internal IP address of the host from within the container.
+
+If som service is running on ``localhost:8080`` on the Docker host you can use ``host.docker.internal:8080`` to access this service from inside a running container. You can't use ``localhost`` because this would refer to the loopback adress of the container environment.
+
+## Bridge Network
+When a container is created Docker automatically assigns it to the default network (**bridge**).
+Within this network, containers can communicate with each other using either their internal IP addresses or container-names. To find out the IP address:
+
+> ``docker container inspect <CONTAINER>``
+> 
+> ``docker container inspect mongodb``
+
+Search the JSON ouput for the "IPAddress" key of the "NetworkSettings" key.
+
+## Custom Docker Network
+With the ``docker network create`` command a custom network can be created. This network facilitates communication between Docker containers and ensures isolation among distinct sets of containers, removing the need for manual adjustments to internal network names.
+
+When launching a container, it becomes a member of a designated network by specifying the '--network' flag followed by the name of the previously created network. This association enables applications within the network to use the **container name** of the desired recipient container as a domain name for communication purposes.
+
+> In a container network, inter-container communication doesn't require port publication because containers within the same network have unrestricted communication capabilities and can freely interact with each other. The ``-p`` flag is only required if we are trying to connect to a container from the host machine.
