@@ -264,3 +264,30 @@ With the ``docker network create`` command a custom network can be created. This
 When launching a container, it becomes a member of a designated network by specifying the '--network' flag followed by the name of the previously created network. This association enables applications within the network to use the **container name** of the desired recipient container as a domain name for communication purposes.
 
 > In a container network, inter-container communication doesn't require port publication because containers within the same network have unrestricted communication capabilities and can freely interact with each other. The ``-p`` flag is only required if we are trying to connect to a container from the host machine.
+
+# Docker Compose
+Docker Compose is a tool for defining a multi-container applications inside a single file, usually `docker-compose.yml`. You can then use that file to spin up your whole application stack with a single command.
+
+## Key aspects of Docker Compose:
+
+1.  Application Definition:
+    - With Docker Compose you define your application's services, networks, and volumes in a declarative format using YAML syntax within the `docker-compose.yml` file
+    - Each service is defined as a separate container, allowing you to specify configuration options, dependencies, and other settings.
+2. Single-Command Startup:
+    - Once your `docker-compose.yml` is defined you can start your whole application stack with a single command: `docker-compose up`.
+    - Docker Compose automatically creates and starts the specified containers, networks, and volumes based on the configuration in the file.
+3. Service Orchestration:
+    - Docker Compose helps with the orchestration of multiple services, making it easy to manage complex applications consisting of interconnected containers.
+    - It ensures that that containers can communicate with each other, and you can define dependencies and ordering between the services.
+4. Environment Configuration
+    - It allows you to define environment variables for services, making it easy to manage configuration across different environments (development, testing, production).
+5. Volume Management:
+    - You can define volumes in your `docker-compose.yml` file to persist data between container restarts.
+    - Docker Compose simplifies the setup and management of volumes for your services.
+6. Network Isolation:
+    - Each Docker Compose project gets its own isolated network by default, allowing services to communicate with each other without exposing unnecessary ports to the host system.
+7. Scaling Services:
+    - Docker Compose makes it straightforward to scale services by specifying the desired number of replicas for a particular service.
+8. Service Logs and Monitoring:
+    - You can view logs for all services collectively or for a specific service using `docker-compose logs`.
+    - Docker Compose integrates with monitoring tools, making it easier to manage and monitor your entire application stack.
