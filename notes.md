@@ -291,3 +291,12 @@ Docker Compose is a tool for defining a multi-container applications inside a si
 8. Service Logs and Monitoring:
     - You can view logs for all services collectively or for a specific service using `docker-compose logs`.
     - Docker Compose integrates with monitoring tools, making it easier to manage and monitor your entire application stack.
+
+## Docker Compose commands:
+1. `docker-compose up` starts all services defined in `docker-compose.yml` file.
+2. `docker-compose run` used to run a one-time command against a service.
+    - Creates and starts a new container based on the services image.
+    - Runs the specified command in the container.
+    - The container is removed after the command completes.
+    - Example: `docker-compose run web npm install`
+3. `docker-compose exec` used to execute a command inside a running service container managed by Docker Compose. It allows you to interact with a specific service's container, run commands in its context, and access its filesystem.
