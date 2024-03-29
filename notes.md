@@ -20,7 +20,7 @@ starts from the immage that was created.
 
 - Alternativly to ``CMD`` there is the ``ENTRYPOINT`` instruction.
 - It provides a fixed starting command for the container
-- ``CMD`` instruction can be used to provide additional arguments to the ``ENTRYPOINT`` instruction
+- Unlike `CMD`, which can be overridden at runtime with arguments passed to `docker run`, `ENTRYPOINT` is immutable. However, arguments provided to `docker run` would be passed (appended) to the entrypoint command.
 
 ## ENV Instruction:
 
